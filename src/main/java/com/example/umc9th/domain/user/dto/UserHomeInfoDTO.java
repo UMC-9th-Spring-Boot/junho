@@ -7,5 +7,5 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserHomeInfoDTO {
     private final Integer point;
-    private final Integer completedMissionCount;
+    private final Long completedMissionCount;
 }

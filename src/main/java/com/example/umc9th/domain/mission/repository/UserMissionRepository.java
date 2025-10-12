@@ -19,7 +19,7 @@ public interface UserMissionRepository extends JpaRepository<UserMission, Long> 
             "FROM UserMission um " +
             "JOIN um.mission m " +
             "JOIN m.store s " +
-            "WHERE um.user = '1' AND um.isCompleted = :isCompleted AND um.id < :lastMissionId " +
+            "WHERE um.user.id = :userId AND um.isCompleted = :isCompleted AND um.id < :lastMissionId " +
             "ORDER BY um.id DESC")
-    Slice<UserMissionDTO> findUserMissionsByIsCompleted(@Param("isCompleted") Boolean isCompleted, @Param("lastMissionId") Long lastMissionId, Pageable pageable);
+    Slice<UserMissionDTO> findUserMissionsByIsCompleted(@Param("userId") Long userId, @Param("isCompleted") Boolean isCompleted, @Param("lastMissionId") Long lastMissionId, Pageable pageable);
 }
