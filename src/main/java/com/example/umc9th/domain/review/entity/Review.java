@@ -5,6 +5,8 @@ import com.example.umc9th.domain.store.entity.Store;
 import com.example.umc9th.domain.user.entity.User;
 import com.example.umc9th.global.entity.BaseEntity;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -35,6 +37,11 @@ public class Review extends BaseEntity {
 
     @Column(nullable = false)
     private String content;
+
+    @Column(nullable = false)
+    @Min(value = 0, message = "별점은 0점 이상이어야 합니다.")
+    @Max(value = 5, message = "별점은 5점을 초과할 수 없습니다.")
+    private Float star;
 
     @OneToMany(mappedBy = "review", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
