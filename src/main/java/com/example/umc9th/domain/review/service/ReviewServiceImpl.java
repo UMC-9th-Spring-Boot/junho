@@ -3,8 +3,8 @@ package com.example.umc9th.domain.review.service;
 import com.example.umc9th.domain.review.dto.ReviewResponseDto;
 import com.example.umc9th.domain.review.entity.Review;
 import com.example.umc9th.domain.review.repository.ReviewPredicate;
-import com.example.umc9th.domain.review.repository.ReviewQueryDsl;
 import com.example.umc9th.domain.review.repository.ReviewRepository;
+import com.example.umc9th.domain.store.repository.StorePredicate;
 import com.example.umc9th.domain.store.repository.StoreRepository;
 import com.example.umc9th.domain.user.repository.UserRepository;
 import com.example.umc9th.global.dto.CursorResponseDto;
@@ -49,7 +49,7 @@ public class ReviewServiceImpl implements ReviewService{
         // 1. 서비스에서 Predicate 조합
         BooleanBuilder predicate = new BooleanBuilder();
         predicate.and(ReviewPredicate.userIdEquals(1L));// todo: 로그인한 사용자
-        predicate.and(ReviewPredicate.storeNameContains(storeName));
+        predicate.and(StorePredicate.storeNameContains(storeName));
         predicate.and(ReviewPredicate.starRange(minStar, maxStar));
 
         // 2. Pageable 객체 생성
