@@ -4,8 +4,8 @@ name: Spring Boot CI Pipeline
 on:
   push:
     branches: [ "main" ] # main 브랜치에 push될 때
-  pull_request:
-    branches: [ "develop" ] # develop 브랜치로 PR이 생성/업데이트될 때
+  #pull_request:
+    #branches: [ "develop" ] # develop 브랜치로 PR이 생성/업데이트될 때
 
 jobs:
   build-and-test: # 빌드와 테스트를 위한 단일 작업
