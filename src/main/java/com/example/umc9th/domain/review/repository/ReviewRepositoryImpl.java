@@ -17,7 +17,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 import static com.example.umc9th.domain.review.entity.QReview.review;
-import static com.example.umc9th.domain.store.entity.QStore.store;
 import static com.example.umc9th.domain.user.entity.QUser.user;
 import static com.example.umc9th.domain.review.entity.QReviewImage.reviewImage;
 import static com.example.umc9th.domain.review.entity.QReviewReply.reviewReply;

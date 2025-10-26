@@ -4,15 +4,10 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import org.springframework.util.StringUtils;
 
 import static com.example.umc9th.domain.review.entity.QReview.review;
-import static com.example.umc9th.domain.store.entity.QStore.store;
 
 public class ReviewPredicate {
 
     private ReviewPredicate() {}
-
-    public static BooleanExpression storeNameContains(String storeName) {
-        return StringUtils.hasText(storeName) ? store.name.contains(storeName) : null;
-    }
 
     public static BooleanExpression starRange(Float minStar, Float maxStar) {
         if (minStar != null && maxStar != null) {
