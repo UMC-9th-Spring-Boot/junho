@@ -23,7 +23,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void deleteUser(Long userId) {
+    public String deleteUser(Long userId) {
         userMissionRepository.deleteByUserId(userId);
         inquiryRepository.deleteByUserId(userId);
         reviewRepository.deleteByUserId(userId);
@@ -32,5 +32,7 @@ public class UserServiceImpl implements UserService {
         notificationAgreementRepository.deleteByUserId(userId);
         termAgreementRepository.deleteByUserId(userId);
         userRepository.softDeleteUser(userId);
+
+        return "유저" + userId.toString() + "이 삭제되었습니다.";
     }
 }

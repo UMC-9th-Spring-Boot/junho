@@ -2,6 +2,8 @@ package com.example.umc9th.domain.store.controller;
 
 import com.example.umc9th.domain.store.dto.StoreResponseDto;
 import com.example.umc9th.domain.store.service.StoreService;
+import com.example.umc9th.global.apiPayload.ApiResponse;
+import com.example.umc9th.global.apiPayload.code.status.GeneralSuccessCode;
 import com.example.umc9th.global.dto.CursorResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -33,11 +35,11 @@ public class StoreController {
         1-4. 페이징: page + size (커서 기반 페이징 옵션 가능)
     """)
     @GetMapping
-    public CursorResponseDto<StoreResponseDto.SearchedStore> searchStore(@RequestParam(required = false) String storeName,
-                                                                         @RequestParam(required = false) String region,
-                                                                         @RequestParam(required = false) Long cursorId,
-                                                                         @RequestParam(required = false, defaultValue = "10") Integer size,
-                                                                         @RequestParam String sortType){
-        return storeService.searchStore(storeName, region, cursorId, size, sortType);
+    public ApiResponse<CursorResponseDto<StoreResponseDto.SearchedStore>> searchStore(@RequestParam(required = false) String storeName,
+                                                                                      @RequestParam(required = false) String region,
+                                                                                      @RequestParam(required = false) Long cursorId,
+                                                                                      @RequestParam(required = false, defaultValue = "10") Integer size,
+                                                                                      @RequestParam String sortType){
+        return ApiResponse.onSuccess(GeneralSuccessCode._OK,storeService.searchStore(storeName, region, cursorId, size, sortType));
     }
 }
