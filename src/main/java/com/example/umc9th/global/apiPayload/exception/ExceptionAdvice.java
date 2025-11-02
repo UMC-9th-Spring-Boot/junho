@@ -1,5 +1,7 @@
 package com.example.umc9th.global.apiPayload.exception;
 
+import com.example.umc9th.config.discord.DiscordNotifierService;
+import com.example.umc9th.config.discord.Notifier;
 import com.example.umc9th.global.apiPayload.ApiResponse;
 import com.example.umc9th.global.apiPayload.code.BaseErrorCode;
 import com.example.umc9th.global.apiPayload.code.status.GeneralErrorCode;
@@ -7,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 // jakarta 임포트
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -26,7 +29,10 @@ import java.util.Optional;
 
 @Slf4j
 @RestControllerAdvice(annotations = {RestController.class})
+@RequiredArgsConstructor
 public class ExceptionAdvice extends ResponseEntityExceptionHandler {
+
+    private final Notifier notifier;
 
     @ExceptionHandler
     public ResponseEntity<Object> validation(ConstraintViolationException e, WebRequest request) {
@@ -61,7 +67,32 @@ public class ExceptionAdvice extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler
     public ResponseEntity<Object> exception(Exception e, WebRequest request) {
-        e.printStackTrace();
+        /*
+ todo : e.printStackTrace() vs. log.error()
+
+e.printStackTrace()는 운영 환경에서 절대 사용하면 안 됩니다.
+이유는 '장애 추적'이 불가능하기 때문입니다.
+
+1.  **기록 대상 (가장 치명적)**
+    * `e.printStackTrace()`: System.err (표준 에러)로 출력합니다.
+        -> 콘솔에만 찍힐 뿐, 설정된 로그 파일(/logs/error.log 등)에 기록이 남지 않습니다.
+        -> 서버 장애 발생 시, 원인을 찾을 방법이 사라집니다.
+    * `log.error()`: Logback 같은 로깅 프레임워크가 관리합니다.
+        -> 설정된 파일, DB, 외부 모니터링 툴 등으로 로그를 '반드시' 전송합니다.
+
+2.  **성능 및 제어**
+    * `e.printStackTrace()`: 동기(Blocking) I/O입니다. 성능 저하를 유발하며 제어가 불가능합니다.
+    * `log.error()`: 비동기 로깅을 지원하며, yml/properties를 통해 로그 레벨(ERROR, WARN, INFO)을 완벽하게 제어할 수 있습니다.
+
+3.  **문맥 정보**
+    * `e.printStackTrace()`: 스택 트레이스만 덩그러니 출력됩니다.
+    * `log.error("500 Error", e)`: "500 Error" 같은 '문맥 메시지'와 함께 스택 트레이스를 기록할 수 있어, 로그 분석이 훨씬 용이합니다.
+
+결론: 서버에 기록을 남기고 장애를 추적하려면 반드시 log.error()를 사용해야 합니다.
+*/
+        log.error("500 Error",e);
+        String requestUri = ((ServletWebRequest)request).getRequest().getRequestURI();
+        notifier.sendNotification(e,requestUri);
 
         return handleExceptionInternalFalse(e, GeneralErrorCode._INTERNAL_SERVER_ERROR.getHttpStatus(), request, e.getMessage());
     }
