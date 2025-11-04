@@ -1,7 +1,5 @@
 package com.example.umc9th.global.apiPayload.exception;
 
-import com.example.umc9th.config.discord.DiscordNotifierService;
-import com.example.umc9th.config.discord.Notifier;
 import com.example.umc9th.global.apiPayload.ApiResponse;
 import com.example.umc9th.global.apiPayload.code.BaseErrorCode;
 import com.example.umc9th.global.apiPayload.code.status.GeneralErrorCode;
@@ -9,7 +7,6 @@ import jakarta.servlet.http.HttpServletRequest;
 // jakarta 임포트
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -29,10 +26,7 @@ import java.util.Optional;
 
 @Slf4j
 @RestControllerAdvice(annotations = {RestController.class})
-@RequiredArgsConstructor
 public class ExceptionAdvice extends ResponseEntityExceptionHandler {
-
-    private final Notifier notifier;
 
     @ExceptionHandler
     public ResponseEntity<Object> validation(ConstraintViolationException e, WebRequest request) {
@@ -91,9 +85,6 @@ e.printStackTrace()는 운영 환경에서 절대 사용하면 안 됩니다.
 결론: 서버에 기록을 남기고 장애를 추적하려면 반드시 log.error()를 사용해야 합니다.
 */
         log.error("500 Error",e);
-        String requestUri = ((ServletWebRequest)request).getRequest().getRequestURI();
-        notifier.sendNotification(e,requestUri);
-
         return handleExceptionInternalFalse(e, GeneralErrorCode._INTERNAL_SERVER_ERROR.getHttpStatus(), request, e.getMessage());
     }
 
