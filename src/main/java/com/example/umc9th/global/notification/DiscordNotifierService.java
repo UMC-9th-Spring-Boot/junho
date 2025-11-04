@@ -1,4 +1,4 @@
-package com.example.umc9th.config.discord;
+package com.example.umc9th.global.notification;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,6 +21,11 @@ public class DiscordNotifierService implements Notifier{
 
     @Value( "${discord.webhook-url}")
     private String discordWebhookUrl;
+
+    @Override
+    public NotificationType getType() {
+        return NotificationType.DISCORD;
+    }
 
     @Async
     @Override
