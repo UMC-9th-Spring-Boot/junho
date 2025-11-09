@@ -26,4 +26,14 @@ public class ReviewResponseDto {
         private String reviewReplyContent;
         private String reviewReplyCreatedAt;
     }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Created{
+        private Long id;
+        private Long storeId;
+        private String createdAt;
+    }
 }
