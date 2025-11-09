@@ -1,5 +1,6 @@
 package com.example.umc9th.domain.review.controller;
 
+import com.example.umc9th.domain.review.dto.ReviewRequestDto;
 import com.example.umc9th.domain.review.dto.ReviewResponseDto;
 import com.example.umc9th.domain.review.service.ReviewService;
 import com.example.umc9th.global.apiPayload.ApiResponse;
@@ -8,10 +9,7 @@ import com.example.umc9th.global.dto.CursorResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -38,5 +36,15 @@ public class ReviewController {
                 cursorId,
                 size));
     }
+
+    @Operation(
+            summary = "리뷰 작성",
+            description = "해당 가게에 리뷰를 추가합니다.")
+    @PostMapping
+    public ApiResponse<ReviewResponseDto.Created> addReview(@RequestBody ReviewRequestDto.Create req) {
+        return ApiResponse.onSuccess(GeneralSuccessCode._CREATED,reviewService.createReview(req));
+    }
+
+
 
 }

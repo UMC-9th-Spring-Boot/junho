@@ -1,5 +1,6 @@
 package com.example.umc9th.domain.review.service;
 
+import com.example.umc9th.domain.review.dto.ReviewRequestDto;
 import com.example.umc9th.domain.review.dto.ReviewResponseDto;
 import com.example.umc9th.domain.review.entity.Review;
 import com.example.umc9th.domain.review.repository.ReviewPredicate;
@@ -30,14 +31,21 @@ public class ReviewServiceImpl implements ReviewService{
 
 
     @Override
-    public void createReview(String content, Long userId, Long storeId) {
+    public ReviewResponseDto.Created createReview(ReviewRequestDto.Create dto) {
         Review review = Review.builder()
-                .content(content)
-                .user(userRepository.getReferenceById(userId))
-                .store(storeRepository.getReferenceById(storeId))
+                .user(userRepository.getReferenceById(1L))
+                .store(storeRepository.getReferenceById(dto.getStoreId()))
+                .content(dto.getContent())
+                .star(dto.getStar())
+                //.reviewImages(dto.getReviewImages()) todo: 이미지 리스트
                 .build();
 
         reviewRepository.save(review);
+        return ReviewResponseDto.Created.builder()
+                .id(review.getId())
+                .storeId(review.getStore().getId())
+                .createdAt(review.getCreatedAt().toString())
+                .build();
     }
 
     @Override
