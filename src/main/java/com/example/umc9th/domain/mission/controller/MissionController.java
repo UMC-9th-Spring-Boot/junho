@@ -2,36 +2,38 @@ package com.example.umc9th.domain.mission.controller;
 
 import com.example.umc9th.domain.mission.dto.MissionRequestDto;
 import com.example.umc9th.domain.mission.dto.MissionResponseDto;
+import com.example.umc9th.domain.mission.entity.Mission;
 import com.example.umc9th.domain.mission.service.MissionService;
-import com.example.umc9th.domain.review.dto.ReviewRequestDto;
-import com.example.umc9th.domain.review.dto.ReviewResponseDto;
+import com.example.umc9th.global.annotation.CheckPage;
 import com.example.umc9th.global.apiPayload.ApiResponse;
 import com.example.umc9th.global.apiPayload.code.status.GeneralSuccessCode;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
+import com.example.umc9th.global.dto.PageResponseDto;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.annotations.Check;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/missions")
-@Tag(name = "미션")
-public class MissionController {
+public class MissionController implements MissionControllerDocs{
     private final MissionService missionService;
 
-    @Operation(
-            summary = "미션 추가",
-            description = "관리자용")
     @PostMapping("/admin")
-    public ApiResponse<String> addMission(@RequestBody MissionRequestDto.CreateMission req) {
+    public ApiResponse<String> createMission(@RequestBody MissionRequestDto.CreateMission req) {
         return ApiResponse.onSuccess(GeneralSuccessCode._CREATED, missionService.createMission(req));
     }
 
-    @Operation(
-            summary = "사용자 미션 추가",
-            description = "사용자가 가게 미션을 본인의 도전 미션에 추가합니다.")
     @PostMapping("/{mission-id}")
-    public ApiResponse<MissionResponseDto.AddUserMission> addMission(@RequestParam @PathVariable("mission-id")Long missionId) {
+    public ApiResponse<MissionResponseDto.MissionInfo> addMission(@PathVariable("mission-id")Long missionId) {
         return ApiResponse.onSuccess(GeneralSuccessCode._CREATED, missionService.addUserMission(missionId));
     }
+
+    @GetMapping("/{store-id}")
+    public ApiResponse<PageResponseDto<MissionResponseDto.MissionInfo>> getMissions(@PathVariable("store-id")Long storeId,
+                                                             @CheckPage Integer page,
+                                                             Integer size) {
+        return ApiResponse.onSuccess(GeneralSuccessCode._OK, missionService.getStoreMissions(storeId, page, size));
+    }
+
+
 }

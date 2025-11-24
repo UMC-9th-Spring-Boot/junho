@@ -30,6 +30,8 @@ public enum GeneralErrorCode implements BaseErrorCode {
     INVALID_DATE_FORMAT(HttpStatus.BAD_REQUEST, "COMMON_004", "요청한 날짜/시간 형식이 올바르지 않습니다. 형식을 확인해주세요."),
     DUPLICATE_UNIQUE_KEY(HttpStatus.CONFLICT, "COMMON_005", "이미 처리된 요청입니다."),
 
+    PAGE_NUMBER_UNDER_ZERO(HttpStatus.BAD_REQUEST, "PAGE_4001", "페이지 번호는 1보다 커야 합니다."),
+
     // s3 사진 첨부 에러
     FILE_UPLOAD_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "FILE_001", "파일 업로드에 실패했습니다.");
 

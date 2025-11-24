@@ -10,7 +10,7 @@ public class MissionResponseDto {
     @Builder
     @Getter
     @AllArgsConstructor
-    public static class AddUserMission{
+    public static class MissionInfo{
         private Long missionId;
         private String content;
         private String createdAt;
