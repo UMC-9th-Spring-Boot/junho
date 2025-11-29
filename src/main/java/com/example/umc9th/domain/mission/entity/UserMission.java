@@ -32,4 +32,7 @@ public class UserMission extends BaseEntity {
     @Builder.Default
     private Boolean isCompleted = false;
 
+    public void complete() {
+        this.isCompleted = true;
+    }
 }

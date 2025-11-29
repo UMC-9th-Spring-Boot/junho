@@ -2,6 +2,7 @@ package com.example.umc9th.domain.mission.repository;
 
 import com.example.umc9th.domain.mission.dto.UserMissionDTO;
 import com.example.umc9th.domain.mission.entity.UserMission;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -22,4 +23,7 @@ public interface UserMissionRepository extends JpaRepository<UserMission, Long> 
             "WHERE um.user.id = :userId AND um.isCompleted = :isCompleted AND um.id < :lastMissionId " +
             "ORDER BY um.id DESC")
     Slice<UserMissionDTO> findUserMissionsByIsCompleted(@Param("userId") Long userId, @Param("isCompleted") Boolean isCompleted, @Param("lastMissionId") Long lastMissionId, Pageable pageable);
+
+    Page<UserMission> findByUserIdAndIsCompleted(Long userId, Boolean isCompleted, Pageable pageable);
+
 }
